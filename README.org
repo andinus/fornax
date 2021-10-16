@@ -1,0 +1,14 @@
+#+title: Fornax
+#+subtitle: Collection of tools to visualize Path Finding Algorithms
+#+export_file_name: index
+#+setupfile: ~/.emacs.d/org-templates/projects.org
+
+| Website         | https://andinus.unfla.me/projects/fornax |
+| Source          | https://git.unfla.me/fornax              |
+| GitHub (mirror) | https://github.com/andinus/fornax        |
+
+* Project Structure
+
+- Algorithms are located in ~algorithms/~ directory, sub-directory needs
+  to be created for programming languages which will hold the actual
+  source.

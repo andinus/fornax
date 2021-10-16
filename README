@@ -1,0 +1,28 @@
+           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                                 FORNAX
+             Collection of tools to visualize Path Finding
+                               Algorithms
+
+                                Andinus
+           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+Table of Contents
+─────────────────
+
+Project Structure
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ Website          <https://andinus.unfla.me/projects/fornax>
+ Source           <https://git.unfla.me/fornax>
+ GitHub (mirror)  <https://github.com/andinus/fornax>
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+Project Structure
+═════════════════
+
+  • Algorithms are located in `algorithms/' directory, sub-directory
+    needs to be created for programming languages which will hold the
+    actual source.
