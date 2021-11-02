@@ -1,0 +1,19 @@
+{
+    "name" : "fornax",
+    "auth" : "zef:andinus",
+    "version" : "0.1.0",
+    "description" : "Collection of tools to visualize Path Finding Algorithms",
+    "authors" : [ "Andinus <andinus@nand.sh>" ],
+    "license" : "ISC",
+    "perl" : "6.d",
+    "provides" : {
+        "Fornax::CLI" : "lib/Fornax/CLI.rakumod"
+    },
+    "depends" : [
+        "Cairo:ver<0.2.7+>"
+    ],
+    "tags": [
+        "Fornax", "Algorithms"
+    ],
+    "source-url" : "https://github.com/andinus/fornax"
+}
