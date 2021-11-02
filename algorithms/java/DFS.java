@@ -12,6 +12,15 @@ public class CG_pathfinder {
         int curx;
         int cury;
         for (int i = 0; i < 4; i++) {
+            // Print the maze at every iteration.
+            for(int j = 0; j < maze.length; j++)
+                for(int k = 0; k < maze[j].length; k++)
+                    if (visited[j][k])
+                        System.out.print("x");
+                    else
+                        System.out.print(maze[j][k]);
+            System.out.print(" ");
+
             curx = x;
             cury = y;
 
@@ -23,13 +32,16 @@ public class CG_pathfinder {
                 continue; //optional?       //for square mazes
 
             if (maze[curx][cury] == '$') {
-                System.out.println("Path Found");
                 paths++;
-                for(int k = 0; k < maze.length; k++) {
-                    for(int j = 0; j < maze.length; j++)
-                        System.out.print(visited[k][j]);
-                    System.out.println();
-                }
+                System.out.print("|");
+                // Print the maze at every iteration.
+                for(int j = 0; j < maze.length; j++)
+                    for(int k = 0; k < maze[j].length; k++)
+                        if (visited[j][k])
+                            System.out.print("x");
+                        else
+                            System.out.print(maze[j][k]);
+                System.out.print(" ");
             } else if (maze[curx][cury] == 'x' || visited[curx][cury])
                 continue;
             else if (maze[curx][cury] == '_') {
@@ -42,30 +54,20 @@ public class CG_pathfinder {
 
     public static void main(String[] args) {
         char[][] maze = {
-            {'*', '#', 'x'},
+            {'*', '#', '_'},
             {'_', '_', '_'},
             {'_', '_', '$'}
         };
+
         int[] start = {0, 0};
-
-        System.out.println("Solving for the maze: ");
-        boolean[][] visited = new boolean[maze.length][maze.length];
-
-        for (int i = 0; i<maze.length; i++){
-            for (int j = 0; j<maze[i].length; j++)
-                System.out.print(maze[i][j] + " "); // Printing maze
-            System.out.println("");
-        }
-
+        boolean[][] visited = new boolean[maze.length][maze[0].length];
         for (int i = 0; i< maze.length; i++)
             for (int j = 0; j<maze.length; j++)
                 visited[i][j] = false;
 
+        System.out.println(String.format("%d:%d", maze.length, maze[0].length));
         visited[0][0] = true;
         traverse(start[0], start[1], maze, visited);
-        if (paths == 0)
-            System.out.println("no paths found");
-        else
-            System.out.println(paths);
+        System.out.println();
     }
 }
