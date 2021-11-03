@@ -46,7 +46,7 @@ This collection includes:
   the maze. Algorithms must output the solution in this format.
 
   ┌────
-  │ rows:<number of rows> cols:<number of columns> iterations:<number of iterations>
+  │ rows:<number of rows> cols:<number of columns>
   │
   │ ...iterations
   └────

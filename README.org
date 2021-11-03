@@ -26,7 +26,7 @@ Fornax format is an intermediate output file generated after solving the
 maze. Algorithms must output the solution in this format.
 
 #+begin_src
-rows:<number of rows> cols:<number of columns> iterations:<number of iterations>
+rows:<number of rows> cols:<number of columns>
 
 ...iterations
 #+end_src
