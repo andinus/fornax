@@ -21,7 +21,7 @@ public class DFS {
 
             // Out of bounds check.
             if (curx < 0 || cury < 0
-                || curx > maze.length - 1 || cury > maze.length - 1)
+                || curx > maze.length - 1 || cury > maze[0].length - 1)
                 continue;
 
             // Marker cells.
@@ -40,8 +40,8 @@ public class DFS {
             System.out.println();
 
             // Found a solution, exiting.
-            if (maze[curx][cury] == '$')
-                System.exit(0);
+            // if (maze[curx][cury] == '$')
+            //     System.exit(0);
 
             if (visited[curx][cury]) {
                 continue;
@@ -57,7 +57,11 @@ public class DFS {
         char[][] maze = {
             {'.', '#', '.'},
             {'.', '.', '.'},
-            {'.', '.', '$'}
+            {'.', '#', '.'},
+            {'.', '.', '.'},
+            {'.', '.', '#'},
+            {'.', '#', '.'},
+            {'.', '.', '$'},
         };
 
         boolean[][] visited = new boolean[maze.length][maze[0].length];
