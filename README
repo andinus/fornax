@@ -17,6 +17,7 @@ Table of Contents
 ..... 1. Without `git'
 ..... 2. With `git'
 3. Documentation
+.. 1. Options
 4. Project Structure
 5. Fornax Format
 .. 1. Grids
@@ -117,6 +118,14 @@ This collection includes:
 
   • *Note*: If the number of iterations are greater than an 8 digit
     number then the slideshow might be incorrect.
+
+
+3.1 Options
+───────────
+
+  • `input': This takes solved input file in the /Fornax/ format.
+  • `frame-rate': Frame rate for the video.
+  • `output': Output directory (for solution video/images).
 
 
 4 Project Structure
