@@ -123,7 +123,7 @@ multi sub MAIN(
     put "[fornax] Creating a slideshow." if $verbose;
 
     my Str $log-level = $verbose ?? "info" !! "error";
-    run «ffmpeg -loglevel "$verbose" -r "$frame-rate" -i "$output/\%08d.png"
+    run «ffmpeg -loglevel "$log-level" -r "$frame-rate" -i "$output/\%08d.png"
                 -vcodec libx264 -crf 28 -pix_fmt yuv420p "$output/solution.mp4"»;
     put "[fornax] Output: '$output'";
 }
