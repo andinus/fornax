@@ -24,6 +24,9 @@ public class DFS {
                 || curx > maze.length - 1 || cury > maze[0].length - 1)
                 continue;
 
+            if (visited[curx][cury])
+                continue;
+
             // Marker cells.
             if (maze[curx][cury] == '$')
                 System.out.print("|");
@@ -43,9 +46,7 @@ public class DFS {
             if (maze[curx][cury] == '$')
                 System.exit(0);
 
-            if (visited[curx][cury]) {
-                continue;
-            } else if (maze[curx][cury] == '.') {
+            if (maze[curx][cury] == '.') {
                 visited[curx][cury] = true;
                 traverse(curx, cury, maze, visited);
                 visited[curx][cury] = false;

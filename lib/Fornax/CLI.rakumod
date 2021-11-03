@@ -17,7 +17,7 @@ proto MAIN(|) is export { unless so @*ARGS { put $*USAGE; exit }; {*} }
 multi sub MAIN(
     File $input, #= fornax format file (solved)
     Directory :$output = '/tmp/output', #= output directory (existing)
-    Int :$frame-rate = 1, #= frame rate
+    Rat() :$frame-rate = 1, #= frame rate
     Bool :$verbose = True, #= verbosity
 ) is export {
     my Str @lines = $input.IO.lines;
@@ -35,12 +35,16 @@ multi sub MAIN(
 
     # Colors.
     constant %C = (
+        red => "#f2b0a2",
+        blue => "#b5d0ff",
+        cyan => "#c0efff",
         black => "#000000",
         white => "#ffffff",
         green => "#aecf90",
-        cyan => "#c0efff",
-        red => "#f2b0a2",
-        pointer => "#093060"
+
+        pointer => "#093060",
+        pointer-red => "#5d3026",
+        pointer-green => "#184034",
     ).map: {.key => hex2rgb(.value)};
 
     # Every cell must be square. Get the maximum width, height and use
@@ -97,8 +101,13 @@ multi sub MAIN(
 
                         .rectangle: |@target;
                         given @grid[$r][$c] -> $cell {
-                            when $cell eq $VIS|$CUR {
-                                .rgba: |%C<cyan>, 0.64;
+                            when $cell eq $CUR {
+                                .rgba: |%C<pointer>, 0.56;
+                                .rgba: |%C<pointer-green>, 0.72 if $status == Completed;
+                                .rgba: |%C<pointer-red>, 0.72 if $status == Blocked;
+                            }
+                            when $cell eq $VIS {
+                                .rgba: |%C<blue>, 0.64;
                                 .rgba: |%C<green>, 0.96 if $status == Completed;
                                 .rgba: |%C<red>, 0.96 if $status == Blocked;
                             }
