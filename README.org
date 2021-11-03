@@ -43,7 +43,7 @@ clone the project if you have ~git~ installed.
 *** Without ~git~
 
 1. Download the release:
-   - https://git.unfla.me/andinus/fornax
+   - https://git.unfla.me/fornax
    - https://github.com/andinus/fornax/releases
 2. Extract the file.
 3. Run ~zef install .~ in source directory.

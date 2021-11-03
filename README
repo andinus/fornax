@@ -82,7 +82,7 @@ This collection includes:
 ╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌
 
   1. Download the release:
-     • <https://git.unfla.me/andinus/fornax>
+     • <https://git.unfla.me/fornax>
      • <https://github.com/andinus/fornax/releases>
   2. Extract the file.
   3. Run `zef install .' in source directory.
