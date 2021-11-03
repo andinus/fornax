@@ -1,0 +1,6 @@
+use Test;
+
+plan 2;
+
+use-ok 'Fornax::CLI';
+use-ok 'Fornax::Hex2RGB';
