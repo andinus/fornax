@@ -17,6 +17,7 @@ proto MAIN(|) is export { unless so @*ARGS { put $*USAGE; exit }; {*} }
 multi sub MAIN(
     File $input, #= fornax format file (solved)
     Directory :$output = 'output', #= output directory (existing)
+    Bool :$verbose = True, #= verbosity
 ) is export {
     my Str @lines = $input.IO.lines;
     my Int() %meta{Str} = Metadata.parse(@lines.first).Hash
@@ -69,7 +70,7 @@ multi sub MAIN(
         # Remove marker.
         $iter .= substr(1) if $status == Completed|Blocked;
 
-        put "$idx $iter $status";
+        put "[fornax] $idx $iter $status" if $verbose;
 
         my @grid = $iter.comb.rotor: %meta<cols>;
         warn "Invalid grid: $idx $iter $status" unless @grid.elems == %meta<rows>;
@@ -90,13 +91,13 @@ multi sub MAIN(
 
                         given @grid[$r][$c] -> $cell {
                             when $cell eq $VIS|$CUR {
-                                .rgba: |%C<cyan>, 0.8;
-                                .rgba: |%C<green>, 0.8 if $status == Completed;
-                                .rgba: |%C<red>, 0.8 if $status == Blocked;
+                                .rgba: |%C<cyan>, 0.64;
+                                .rgba: |%C<green>, 0.96 if $status == Completed;
+                                .rgba: |%C<red>, 0.96 if $status == Blocked;
                             }
-                            when $cell eq $BLOK { .rgba: |%C<black>, 0.5 }
+                            when $cell eq $BLOK { .rgba: |%C<black>, 0.48 }
                             when $cell eq $DEST { .rgb: |%C<green> }
-                            default { .rgb: |%C<white> }
+                            default { .rgba: |%C<black>, 0.08 }
                         }
                         .fill :preserve;
 
@@ -110,6 +111,11 @@ multi sub MAIN(
             .finish;
         }
     }
+
+    put "[fornax] Generated images.";
+    put "[fornax] Creating a slideshow.";
+    run «ffmpeg -loglevel error -r 1 -i "$output/\%08d.png"
+                -vcodec libx264 -crf 28 -pix_fmt yuv420p "$output/solution.mp4"»;
 }
 
 multi sub MAIN(
