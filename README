@@ -202,5 +202,6 @@ This collection includes:
 6.1 v0.1.0 - 2021-11-03
 ───────────────────────
 
-  ⁃ Initial implementation. Includes DFS solver in Java, tool to
-    visualize the solution.
+  ⁃ Initial implementation:
+
+    • Includes DFS solver in Java and a tool to visualize the solution.
