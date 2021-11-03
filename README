@@ -10,10 +10,11 @@
 Table of Contents
 ─────────────────
 
-1. Documentation
-2. Fornax Format
+1. Demo
+2. Documentation
+3. Fornax Format
 .. 1. Grids
-3. Project Structure
+4. Project Structure
 
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -29,7 +30,19 @@ This collection includes:
   languages.
 
 
-1 Documentation
+1 Demo
+══════
+
+  Solution for /DFS-33/, generated on /2021-11-03/ (click to play).
+
+  [https://andinus.unfla.me/resources/projects/fornax/2021-11-03-DFS-33.png]
+
+
+[https://andinus.unfla.me/resources/projects/fornax/2021-11-03-DFS-33.png]
+<https://andinus.unfla.me/resources/projects/fornax/2021-11-03-DFS-33.mp4>
+
+
+2 Documentation
 ═══════════════
 
   Fornax parses /Fornax format/, generates a `PNG' for each iteration
@@ -38,8 +51,11 @@ This collection includes:
   • Solved paths are highlighted if the iteration is preceded by `|'.
   • Illegal paths are highlighted if the iteration is preceded by `!'.
 
+  • *Note*: If the number of iterations are greater than an 8 digit
+    number then the slideshow might be incorrect.
 
-2 Fornax Format
+
+3 Fornax Format
 ═══════════════
 
   Fornax format is an intermediate output file generated after solving
@@ -70,7 +86,7 @@ This collection includes:
   • First iteration is assumed to be the maze.
 
 
-2.1 Grids
+3.1 Grids
 ─────────
 
   A grid is printed for every iteration. Grids are composed of cells.
@@ -90,9 +106,18 @@ This collection includes:
     symbol if it makes sense.
 
 
-3 Project Structure
+4 Project Structure
 ═══════════════════
 
   • Algorithms are located in `algorithms/' directory, sub-directory
     needs to be created for programming languages which will hold the
     actual source.
+
+  • Sample solutions can be found in `resources/solutions/' directory.
+
+    • *Note*: Some solutions might output illegal moves (like walking
+      over blocked path), this error is only in visualization, the
+      solution is correct.
+
+      This has been fixed in commit
+      `8cef86f0eb8b46b0ed2d7c37fa216890300249f6'.

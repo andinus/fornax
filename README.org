@@ -12,6 +12,12 @@ This collection includes:
 - Algorithms: Various algorithms solved in several programming
   languages.
 
+* Demo
+
+Solution for /DFS-33/, generated on /2021-11-03/ (click to play).
+
+[[https://andinus.unfla.me/resources/projects/fornax/2021-11-03-DFS-33.mp4][https://andinus.unfla.me/resources/projects/fornax/2021-11-03-DFS-33.png]]
+
 * Documentation
 
 Fornax parses /Fornax format/, generates a ~PNG~ for each iteration which is
@@ -19,6 +25,9 @@ later converted to a slideshow with ~ffmpeg~.
 
 - Solved paths are highlighted if the iteration is preceded by ~|~.
 - Illegal paths are highlighted if the iteration is preceded by ~!~.
+
+- *Note*: If the number of iterations are greater than an 8 digit number
+  then the slideshow might be incorrect.
 
 * Fornax Format
 
@@ -69,3 +78,12 @@ A grid is printed for every iteration. Grids are composed of cells.
 - Algorithms are located in ~algorithms/~ directory, sub-directory needs
   to be created for programming languages which will hold the actual
   source.
+
+- Sample solutions can be found in ~resources/solutions/~ directory.
+
+  - *Note*: Some solutions might output illegal moves (like walking over
+    blocked path), this error is only in visualization, the solution is
+    correct.
+
+    This has been fixed in commit
+    ~8cef86f0eb8b46b0ed2d7c37fa216890300249f6~.
