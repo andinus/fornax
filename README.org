@@ -7,6 +7,30 @@
 | Source          | https://git.unfla.me/fornax              |
 | GitHub (mirror) | https://github.com/andinus/fornax        |
 
+This collection includes:
+- ~fornax~: Program that parses /Fornax Format/ and outputs video solution.
+- Algorithms: Various algorithms solved in several programming
+  languages.
+
+* Fornax Format
+
+Fornax format is an intermediate output file generated after solving the
+maze. Algorithms must output the solution in this format.
+
+#+begin_src
+rows:<number of rows> cols:<number of columns> iterations:<number of iterations>
+
+...iterations
+#+end_src
+
+~...iterations~ is to be replaced by the resulting grid in each iteration
+that is to be included in the final video. Since the number of rows and
+columns is known, the whole grid should be printed in a single line.
+
+- Every iteration should be separated by a newline.
+- If the iteration cells is not equal to ~rows * columns~ then it may be
+  ignored by the program that parses the file.
+
 * Project Structure
 
 - Algorithms are located in ~algorithms/~ directory, sub-directory needs

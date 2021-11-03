@@ -1,3 +1,4 @@
 .precomp
 output/
 .log
+*.fornax
