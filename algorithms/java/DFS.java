@@ -1,5 +1,5 @@
 public class DFS {
-    private static final int[][] directions = new int[][]{
+    static int[][] directions = new int[][]{
         {+0, +1}, // Right.
         {+1, +0}, // Down.
         {+0, -1}, // Left.
@@ -7,12 +7,9 @@ public class DFS {
     };
 
     static void traverse(int x, int y, char[][] maze, boolean[][] visited) {
-        int curx;
-        int cury;
-
         for (int i = 0; i < 4; i++) {
-            curx = x + directions[i][0];
-            cury = y + directions[i][1];
+            int curx = x + directions[i][0];
+            int cury = y + directions[i][1];
 
             // Out of bounds check.
             if (curx < 0 || cury < 0
