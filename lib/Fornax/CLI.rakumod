@@ -17,6 +17,7 @@ proto MAIN(|) is export { unless so @*ARGS { put $*USAGE; exit }; {*} }
 multi sub MAIN(
     File $input, #= fornax format file (solved)
     Directory :$output = 'output', #= output directory (existing)
+    Int :$frame-rate = 1, #= frame rate
     Bool :$verbose = True, #= verbosity
 ) is export {
     my Str @lines = $input.IO.lines;
@@ -47,24 +48,27 @@ multi sub MAIN(
     my Int %cell = width => %CANVAS<width> div %meta<cols>,
                    height => %CANVAS<height> div %meta<rows>;
 
+    my Int $side;
+    my Int %excess = :0width, :0height;
+
     # Consider width if cells with dimension (width * width) fit
     # within the canvas, otherwise consider the height.
     if (%cell<width> * %meta<rows>) < %CANVAS<height> {
-        %cell<height> = %cell<width>;
+        %excess<height> = abs %CANVAS<width> - %CANVAS<height>;
+        $side = %cell<width>;
     } else {
-        %cell<width> = %cell<height>;
+        %excess<width> = abs %CANVAS<width> - %CANVAS<height>;
+        $side = %cell<height>;
     }
 
     enum IterStatus <Walking Blocked Completed>;
 
     for @lines.skip.kv -> $idx, $iter is rw {
-
         my IterStatus $status;
         given $iter.substr(0, 1) {
             when '|' { $status = Completed }
             when '!' { $status = Blocked }
             default { $status = Walking }
-
         };
 
         # Remove marker.
@@ -82,13 +86,16 @@ multi sub MAIN(
                 # Paint the entire canvas white.
                 .rgb: |%C<white>;
                 .rectangle(0, 0, %CANVAS<width>, %CANVAS<height>);
-                .fill :preserve;
+                .fill;
                 .stroke;
 
                 for ^%meta<rows> -> $r {
                     for ^%meta<cols> -> $c {
-                        .rectangle($c * %cell<height>, $r * %cell<width>, %cell<height>, %cell<width>);
+                        my Int @target = %excess<width> div 2 + $c * $side,
+                                         %excess<height> div 2 + $r * $side,
+                                         $side, $side;
 
+                        .rectangle: |@target;
                         given @grid[$r][$c] -> $cell {
                             when $cell eq $VIS|$CUR {
                                 .rgba: |%C<cyan>, 0.64;
@@ -102,7 +109,7 @@ multi sub MAIN(
                         .fill :preserve;
 
                         .rgb: |%C<black>;
-                        .rectangle($c * %cell<height>, $r * %cell<width>, %cell<height>, %cell<width>);
+                        .rectangle: |@target;
                         .stroke;
                     }
                 }
@@ -114,7 +121,7 @@ multi sub MAIN(
 
     put "[fornax] Generated images.";
     put "[fornax] Creating a slideshow.";
-    run «ffmpeg -loglevel error -r 1 -i "$output/\%08d.png"
+    run «ffmpeg -loglevel error -r "$frame-rate" -i "$output/\%08d.png"
                 -vcodec libx264 -crf 28 -pix_fmt yuv420p "$output/solution.mp4"»;
 }
 
