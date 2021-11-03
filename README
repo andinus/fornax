@@ -63,7 +63,7 @@ This collection includes:
 2.1 Release
 ───────────
 
-  1. Run `zef install fornax'.
+  1. Run `zef install 'fornax:auth<zef:andinus>''
 
   Fornax should be installed, try running `fornax --version' to confirm.
 
