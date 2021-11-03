@@ -1,63 +1,112 @@
 use Cairo;
+use Fornax::Hex2RGB;
 
+subset File of Str where *.IO.f;
 subset Directory of Str where *.IO.d;
+
+#| Parses fornax format file to extract metadata.
+grammar Metadata {
+    rule TOP {  <rows> <cols> }
+    token rows { 'rows:' <(\d+)> }
+    token cols { 'cols:' <(\d+)> }
+}
+
 proto MAIN(|) is export { unless so @*ARGS { put $*USAGE; exit }; {*} }
 
 #| Collection of tools to visualize Path Finding Algorithms
 multi sub MAIN(
-    Str $script, #= script to run (e.g. java/DFS)
-    Directory :$algorithms = 'algorithms', #= algorithms directory
-    Directory :$output = 'output', #= output directory
+    File $input, #= fornax format file (solved)
+    Directory :$output = 'output', #= output directory (existing)
 ) is export {
-    my Str $interpreter = $script.split("/").first;
-    my IO() $program-path = "$algorithms/$script.$interpreter";
+    my Str @lines = $input.IO.lines;
+    my Int() %meta{Str} = Metadata.parse(@lines.first).Hash
+                             or die "Cannot parse metadata";
 
-    die "Program path invalid" unless $program-path.IO.f;
+    # Cells as defined by fornax format.
+    constant $PATH = '.';
+    constant $BLOK = '#';
+    constant $DEST = '$';
+    constant $VIS = '-';
+    constant $CUR = '@';
 
-    my $proc = run «$interpreter $program-path», :out;
-    my @out = $proc.out.slurp(:close).lines;
+    constant %CANVAS = :1920width, :1080height;
 
-    my Int() $rows = @out[0].split(":")[0];
-    my Int() $columns = @out[0].split(":")[1];
+    # Colors.
+    constant %C = (
+        black => "#000000",
+        white => "#ffffff",
+        green => "#aecf90",
+        cyan => "#c0efff",
+        red => "#f2b0a2",
+        pointer => "#093060"
+    ).map: {.key => hex2rgb(.value)};
 
-    my Int $c-width = 512;
-    my Int $c-height = 512;
+    # Every cell must be square. Get the maximum width, height and use
+    # that to decide which is to be used.
+    my Int %cell = width => %CANVAS<width> div %meta<cols>,
+                   height => %CANVAS<height> div %meta<rows>;
 
-    for @out[1].split(" ", :skip-empty) -> $iter {
-        my $file = "$output/" ~ $++ ~ ".svg";
-        given Cairo::Surface::SVG.create($file, $c-width, $c-height) {
+    # Consider width if cells with dimension (width * width) fit
+    # within the canvas, otherwise consider the height.
+    if (%cell<width> * %meta<rows>) < %CANVAS<height> {
+        %cell<height> = %cell<width>;
+    } else {
+        %cell<width> = %cell<height>;
+    }
+
+    enum IterStatus <Walking Blocked Completed>;
+
+    for @lines.skip.kv -> $idx, $iter is rw {
+
+        my IterStatus $status;
+        given $iter.substr(0, 1) {
+            when '|' { $status = Completed }
+            when '!' { $status = Blocked }
+            default { $status = Walking }
+
+        };
+
+        # Remove marker.
+        $iter .= substr(1) if $status == Completed|Blocked;
+
+        put "$idx $iter $status";
+
+        my @grid = $iter.comb.rotor: %meta<cols>;
+        warn "Invalid grid: $idx $iter $status" unless @grid.elems == %meta<rows>;
+
+        given Cairo::Image.create(
+            Cairo::FORMAT_ARGB32, %CANVAS<width>, %CANVAS<height>
+        ) {
             given Cairo::Context.new($_) {
-                my $COMPLETE = so $iter.comb.first eq "|";
-                my @iter-corrected = $COMPLETE ?? $iter.comb.skip !! $iter.comb;
-                my @grid = @iter-corrected.rotor: $columns;
+                # Paint the entire canvas white.
+                .rgb: |%C<white>;
+                .rectangle(0, 0, %CANVAS<width>, %CANVAS<height>);
+                .fill :preserve;
+                .stroke;
 
-                die "Invalid grid: $iter" unless @grid.elems == $rows;
-
-                my $x-grid = $c-width / $rows;
-                my $y-grid = $c-height / $columns;
-
-                for ^$rows -> $r {
-                    for ^$columns -> $c {
-                        .rectangle($c * $y-grid, $r * $x-grid, $y-grid, $x-grid);
+                for ^%meta<rows> -> $r {
+                    for ^%meta<cols> -> $c {
+                        .rectangle($c * %cell<height>, $r * %cell<width>, %cell<height>, %cell<width>);
 
                         given @grid[$r][$c] -> $cell {
-                            when $cell eq 'x' {
-                                .rgba(192 / 255, 239 / 255, 255 / 255, 0.8);
-                                .rgba(174 / 255, 207 / 255, 144 / 255, 1) if $COMPLETE;
+                            when $cell eq $VIS|$CUR {
+                                .rgba: |%C<cyan>, 0.8;
+                                .rgba: |%C<green>, 0.8 if $status == Completed;
+                                .rgba: |%C<red>, 0.8 if $status == Blocked;
                             }
-                            when $cell eq '#' { .rgba(0, 0, 0, 0.5); }
-                            when $cell eq '$' { .rgba(174 / 255, 207 / 255, 144 / 255, 1); }
-                            when $cell eq '_' { .rgba(0, 0, 0, 0.1); }
-                            default { .rgb(1, 0, 0); }
+                            when $cell eq $BLOK { .rgba: |%C<black>, 0.5 }
+                            when $cell eq $DEST { .rgb: |%C<green> }
+                            default { .rgb: |%C<white> }
                         }
                         .fill :preserve;
 
-                        .rgba(0, 0, 0, 0.6);
-                        .rectangle($c * $y-grid, $r * $x-grid, $y-grid, $x-grid);
+                        .rgb: |%C<black>;
+                        .rectangle($c * %cell<height>, $r * %cell<width>, %cell<height>, %cell<width>);
                         .stroke;
                     }
                 }
             }
+            .write_png("%s/%08d.png".sprintf: $output, $idx);
             .finish;
         }
     }
