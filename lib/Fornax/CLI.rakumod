@@ -16,7 +16,7 @@ proto MAIN(|) is export { unless so @*ARGS { put $*USAGE; exit }; {*} }
 #| Collection of tools to visualize Path Finding Algorithms
 multi sub MAIN(
     File $input, #= fornax format file (solved)
-    Directory :$output = 'output', #= output directory (existing)
+    Directory :$output = '/tmp/output', #= output directory (existing)
     Int :$frame-rate = 1, #= frame rate
     Bool :$verbose = True, #= verbosity
 ) is export {
@@ -119,10 +119,11 @@ multi sub MAIN(
         }
     }
 
-    put "[fornax] Generated images.";
-    put "[fornax] Creating a slideshow.";
+    put "[fornax] Generated images." if $verbose;
+    put "[fornax] Creating a slideshow." if $verbose;
     run «ffmpeg -loglevel error -r "$frame-rate" -i "$output/\%08d.png"
                 -vcodec libx264 -crf 28 -pix_fmt yuv420p "$output/solution.mp4"»;
+    put "[fornax] Output: '$output'";
 }
 
 multi sub MAIN(
