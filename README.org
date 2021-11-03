@@ -46,6 +46,8 @@ columns is known, the whole grid should be printed in a single line.
 - Iteration that tries to walk on a blocked path can be preceded by ~!~
   character.
 
+- First iteration is assumed to be the maze.
+
 ** Grids
 
 A grid is printed for every iteration. Grids are composed of cells.

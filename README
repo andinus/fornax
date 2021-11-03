@@ -67,6 +67,8 @@ This collection includes:
   • Iteration that tries to walk on a blocked path can be preceded by
     `!' character.
 
+  • First iteration is assumed to be the maze.
+
 
 2.1 Grids
 ─────────
