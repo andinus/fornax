@@ -54,10 +54,10 @@ multi sub MAIN(
     # Consider width if cells with dimension (width * width) fit
     # within the canvas, otherwise consider the height.
     if (%cell<width> * %meta<rows>) < %CANVAS<height> {
-        %excess<height> = abs %CANVAS<width> - %CANVAS<height>;
+        %excess<height> = %CANVAS<height> - (%cell<width> * %meta<rows>);
         $side = %cell<width>;
     } else {
-        %excess<width> = abs %CANVAS<width> - %CANVAS<height>;
+        %excess<width> = %CANVAS<width> - (%cell<height> * %meta<cols>);
         $side = %cell<height>;
     }
 
