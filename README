@@ -12,9 +12,11 @@ Table of Contents
 
 1. Demo
 2. Documentation
-3. Fornax Format
+3. Project Structure
+4. Fornax Format
 .. 1. Grids
-4. Project Structure
+5. News
+.. 1. v0.1.0 - 2021-11-03
 
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -55,7 +57,24 @@ This collection includes:
     number then the slideshow might be incorrect.
 
 
-3 Fornax Format
+3 Project Structure
+═══════════════════
+
+  • Algorithms are located in `algorithms/' directory, sub-directory
+    needs to be created for programming languages which will hold the
+    actual source.
+
+  • Sample solutions can be found in `resources/solutions/' directory.
+
+    • *Note*: Some solutions might output illegal moves (like walking
+      over blocked path), this error is only in visualization, the
+      solution is correct.
+
+      This has been fixed in commit
+      `8cef86f0eb8b46b0ed2d7c37fa216890300249f6'.
+
+
+4 Fornax Format
 ═══════════════
 
   Fornax format is an intermediate output file generated after solving
@@ -86,7 +105,7 @@ This collection includes:
   • First iteration is assumed to be the maze.
 
 
-3.1 Grids
+4.1 Grids
 ─────────
 
   A grid is printed for every iteration. Grids are composed of cells.
@@ -106,18 +125,11 @@ This collection includes:
     symbol if it makes sense.
 
 
-4 Project Structure
-═══════════════════
+5 News
+══════
 
-  • Algorithms are located in `algorithms/' directory, sub-directory
-    needs to be created for programming languages which will hold the
-    actual source.
+5.1 v0.1.0 - 2021-11-03
+───────────────────────
 
-  • Sample solutions can be found in `resources/solutions/' directory.
-
-    • *Note*: Some solutions might output illegal moves (like walking
-      over blocked path), this error is only in visualization, the
-      solution is correct.
-
-      This has been fixed in commit
-      `8cef86f0eb8b46b0ed2d7c37fa216890300249f6'.
+  ⁃ Initial implementation. Includes DFS solver in Java, tool to
+    visualize the solution.
