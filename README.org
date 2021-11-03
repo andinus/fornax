@@ -17,6 +17,9 @@ This collection includes:
 Fornax parses /Fornax format/, generates a ~PNG~ for each iteration which is
 later converted to a slideshow with ~ffmpeg~.
 
+- Solved paths are highlighted if the iteration is preceded by ~|~.
+- Illegal paths are highlighted if the iteration is preceded by ~!~.
+
 * Fornax Format
 
 Fornax format is an intermediate output file generated after solving the
@@ -38,8 +41,10 @@ columns is known, the whole grid should be printed in a single line.
   columns) + 1~ then it may be ignored by the program that parses the
   file.
 
-- Solved iteration must be preceded by ~|~ character. The program may or
-  may not use it while rendering the video.
+- Solved iteration can be preceded by ~|~ character.
+
+- Iteration that tries to walk on a blocked path can be preceded by ~!~
+  character.
 
 ** Grids
 
