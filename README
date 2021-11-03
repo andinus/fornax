@@ -10,8 +10,10 @@
 Table of Contents
 ─────────────────
 
-1. Fornax Format
-2. Project Structure
+1. Documentation
+2. Fornax Format
+.. 1. Grids
+3. Project Structure
 
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -27,7 +29,14 @@ This collection includes:
   languages.
 
 
-1 Fornax Format
+1 Documentation
+═══════════════
+
+  Fornax parses /Fornax format/, generates a `PNG' for each iteration
+  which is later converted to a slideshow with `ffmpeg'.
+
+
+2 Fornax Format
 ═══════════════
 
   Fornax format is an intermediate output file generated after solving
@@ -45,11 +54,33 @@ This collection includes:
   single line.
 
   • Every iteration should be separated by a newline.
-  • If the iteration cells is not equal to `rows * columns' then it may
-    be ignored by the program that parses the file.
+
+  • If the iteration cells is not equal to `rows * columns' or `(rows *
+      columns) + 1' then it may be ignored by the program that parses
+      the file.
+
+  • Solved iteration must be preceded by `|' character. The program may
+    or may not use it while rendering the video.
 
 
-2 Project Structure
+2.1 Grids
+─────────
+
+  A grid is printed for every iteration. Grids are composed of cells.
+
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Cell              Symbol
+  ──────────────────────────
+   Path              `.'
+   Blocked           `#'
+  ──────────────────────────
+   Visited           `-'
+   Current Position  `@'
+   Destination       `$'
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+3 Project Structure
 ═══════════════════
 
   • Algorithms are located in `algorithms/' directory, sub-directory

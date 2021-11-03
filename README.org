@@ -12,6 +12,11 @@ This collection includes:
 - Algorithms: Various algorithms solved in several programming
   languages.
 
+* Documentation
+
+Fornax parses /Fornax format/, generates a ~PNG~ for each iteration which is
+later converted to a slideshow with ~ffmpeg~.
+
 * Fornax Format
 
 Fornax format is an intermediate output file generated after solving the
@@ -28,8 +33,26 @@ that is to be included in the final video. Since the number of rows and
 columns is known, the whole grid should be printed in a single line.
 
 - Every iteration should be separated by a newline.
-- If the iteration cells is not equal to ~rows * columns~ then it may be
-  ignored by the program that parses the file.
+
+- If the iteration cells is not equal to ~rows * columns~ or ~(rows *
+  columns) + 1~ then it may be ignored by the program that parses the
+  file.
+
+- Solved iteration must be preceded by ~|~ character. The program may or
+  may not use it while rendering the video.
+
+** Grids
+
+A grid is printed for every iteration. Grids are composed of cells.
+
+| Cell             | Symbol |
+|------------------+--------|
+| Path             | ~.~      |
+| Blocked          | ~#~      |
+|------------------+--------|
+| Visited          | ~-~      |
+| Current Position | ~@~      |
+| Destination      | ~$~      |
 
 * Project Structure
 
