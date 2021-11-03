@@ -121,7 +121,9 @@ multi sub MAIN(
 
     put "[fornax] Generated images." if $verbose;
     put "[fornax] Creating a slideshow." if $verbose;
-    run «ffmpeg -loglevel error -r "$frame-rate" -i "$output/\%08d.png"
+
+    my Str $log-level = $verbose ?? "info" !! "error";
+    run «ffmpeg -loglevel "$verbose" -r "$frame-rate" -i "$output/\%08d.png"
                 -vcodec libx264 -crf 28 -pix_fmt yuv420p "$output/solution.mp4"»;
     put "[fornax] Output: '$output'";
 }

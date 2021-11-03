@@ -40,8 +40,8 @@ public class DFS {
             System.out.println();
 
             // Found a solution, exiting.
-            // if (maze[curx][cury] == '$')
-            //     System.exit(0);
+            if (maze[curx][cury] == '$')
+                System.exit(0);
 
             if (visited[curx][cury]) {
                 continue;
@@ -55,13 +55,13 @@ public class DFS {
 
     public static void main(String[] args) {
         char[][] maze = {
-            {'.', '#', '.'},
-            {'.', '.', '.'},
-            {'.', '#', '.'},
-            {'.', '.', '.'},
-            {'.', '.', '#'},
-            {'.', '#', '.'},
-            {'.', '.', '$'},
+            {'.', '#', '.', '#', '.'},
+            {'.', '.', '.', '.', '.'},
+            {'.', '#', '.', '.', '$'},
+            {'.', '.', '.', '#', '.'},
+            {'.', '.', '.', '.', '#'},
+            {'.', '#', '#', '.', '.'},
+            {'.', '.', '.', '.', '.'},
         };
 
         boolean[][] visited = new boolean[maze.length][maze[0].length];
