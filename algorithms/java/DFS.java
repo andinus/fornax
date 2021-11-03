@@ -1,3 +1,7 @@
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class DFS {
     static int[][] directions = new int[][]{
         {+0, +1}, // Right.
@@ -7,7 +11,11 @@ public class DFS {
     };
 
     static void traverse(int x, int y, char[][] maze, boolean[][] visited) {
-        for (int i = 0; i < 4; i++) {
+        // Move in random direction.
+        List<Integer> l = Arrays.asList(new Integer[]{0, 1, 2, 3});
+        Collections.shuffle(l);
+
+        for (int i: l) {
             int curx = x + directions[i][0];
             int cury = y + directions[i][1];
 
