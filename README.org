@@ -54,10 +54,13 @@ A grid is printed for every iteration. Grids are composed of cells.
 |------------------+--------|
 | Path             | ~.~      |
 | Blocked          | ~#~      |
+| Destination      | ~$~      |
 |------------------+--------|
 | Visited          | ~-~      |
 | Current Position | ~@~      |
-| Destination      | ~$~      |
+
+- /Current Position/ is prioritized over /Blocked/ & /Destination/ symbol if
+  it makes sense.
 
 * Project Structure
 

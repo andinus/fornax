@@ -78,11 +78,14 @@ This collection includes:
   ──────────────────────────
    Path              `.'
    Blocked           `#'
+   Destination       `$'
   ──────────────────────────
    Visited           `-'
    Current Position  `@'
-   Destination       `$'
   ━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  • /Current Position/ is prioritized over /Blocked/ & /Destination/
+    symbol if it makes sense.
 
 
 3 Project Structure
