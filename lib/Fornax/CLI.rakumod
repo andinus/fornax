@@ -16,6 +16,7 @@ proto MAIN(|) is export { unless so @*ARGS { put $*USAGE; exit }; {*} }
 multi sub MAIN(
     File $input, #= fornax format file (solved)
     IO() :$out = '/tmp', #= output directory (default: /tmp)
+    Int() :$batch = 4, #= batch size (generate frames in parallel)
     Rat() :$frame-rate = 1, #= frame rate (default: 1)
     Bool :$skip-video, #= skip video solution
     Bool :$verbose = True, #= verbosity
@@ -75,64 +76,73 @@ multi sub MAIN(
 
     enum IterStatus <Walking Blocked Completed>;
 
+    my Promise @p;
     for @lines.skip.kv -> $idx, $iter is rw {
-        my IterStatus $status;
-        given $iter.substr(0, 1) {
-            when '|' { $status = Completed }
-            when '!' { $status = Blocked }
-            default { $status = Walking }
-        };
+        # Wait until all scheduled jobs are finished, then empty the
+        # array and continue.
+        if @p.elems == $batch {
+            while @p.grep(*.status).elems !== $batch {};
+            @p = [];
+        }
 
-        # Remove marker.
-        $iter .= substr(1) if $status == Completed|Blocked;
+        push @p, start {
+            my IterStatus $status;
+            given $iter.substr(0, 1) {
+                when '|' { $status = Completed }
+                when '!' { $status = Blocked }
+                default { $status = Walking }
+            };
 
-        put "[fornax] $idx $iter $status" if $verbose;
+            # Remove marker.
+            $iter .= substr(1) if $status == Completed|Blocked;
 
-        my @grid = $iter.comb.rotor: %meta<cols>;
-        warn "Invalid grid: $idx $iter $status" unless @grid.elems == %meta<rows>;
+            put "[fornax] $idx $iter $status" if $verbose;
 
-        given Cairo::Image.create(
-            Cairo::FORMAT_ARGB32, %CANVAS<width>, %CANVAS<height>
-        ) {
-            given Cairo::Context.new($_) {
-                # Paint the entire canvas white.
-                .rgb: |%C<white>;
-                .rectangle(0, 0, %CANVAS<width>, %CANVAS<height>);
-                .fill;
-                .stroke;
+            my @grid = $iter.comb.rotor: %meta<cols>;
+            warn "Invalid grid: $idx $iter $status" unless @grid.elems == %meta<rows>;
 
-                for ^%meta<rows> -> $r {
-                    for ^%meta<cols> -> $c {
-                        my Int @target = %excess<width> div 2 + $c * $side,
-                                         %excess<height> div 2 + $r * $side,
-                                         $side, $side;
+            given Cairo::Image.create(
+                Cairo::FORMAT_ARGB32, %CANVAS<width>, %CANVAS<height>
+            ) {
+                given Cairo::Context.new($_) {
+                    # Paint the entire canvas white.
+                    .rgb: |%C<white>;
+                    .rectangle(0, 0, %CANVAS<width>, %CANVAS<height>);
+                    .fill;
 
-                        .rectangle: |@target;
-                        given @grid[$r][$c] -> $cell {
-                            when $cell eq $CUR {
-                                .rgba: |%C<pointer>, 0.56;
-                                .rgba: |%C<pointer-green>, 0.72 if $status == Completed;
-                                .rgba: |%C<pointer-red>, 0.72 if $status == Blocked;
+                    for ^%meta<rows> -> $r {
+                        for ^%meta<cols> -> $c {
+                            my Int @target = %excess<width> div 2 + $c * $side,
+                                             %excess<height> div 2 + $r * $side,
+                                             $side, $side;
+
+                            .rectangle: |@target;
+
+                            given @grid[$r][$c] -> $cell {
+                                when $cell eq $CUR {
+                                    .rgba: |%C<pointer>, 0.56;
+                                    .rgba: |%C<pointer-green>, 0.72 if $status == Completed;
+                                    .rgba: |%C<pointer-red>, 0.72 if $status == Blocked;
+                                }
+                                when $cell eq $VIS {
+                                    .rgba: |%C<blue>, 0.72;
+                                    .rgba: |%C<green>, 0.96 if $status == Completed;
+                                    .rgba: |%C<red>, 0.96 if $status == Blocked;
+                                }
+                                when $cell eq $BLOK { .rgba: |%C<black>, 0.56 }
+                                when $cell eq $DEST { .rgb: |%C<green> }
+                                default { .rgba: |%C<black>, 0.08 }
                             }
-                            when $cell eq $VIS {
-                                .rgba: |%C<blue>, 0.64;
-                                .rgba: |%C<green>, 0.96 if $status == Completed;
-                                .rgba: |%C<red>, 0.96 if $status == Blocked;
-                            }
-                            when $cell eq $BLOK { .rgba: |%C<black>, 0.48 }
-                            when $cell eq $DEST { .rgb: |%C<green> }
-                            default { .rgba: |%C<black>, 0.08 }
+                            .fill :preserve;
+
+                            .rgb: |%C<black>;
+                            .stroke;
                         }
-                        .fill :preserve;
-
-                        .rgb: |%C<black>;
-                        .rectangle: |@target;
-                        .stroke;
                     }
                 }
+                .write_png("%s/%08d.png".sprintf: $output, $idx);
+                .finish;
             }
-            .write_png("%s/%08d.png".sprintf: $output, $idx);
-            .finish;
         }
     }
 
