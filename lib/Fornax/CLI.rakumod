@@ -2,7 +2,6 @@ use Cairo;
 use Fornax::Hex2RGB;
 
 subset File of Str where *.IO.f;
-subset Directory of Str where *.IO.d;
 
 #| Parses fornax format file to extract metadata.
 grammar Metadata {
@@ -16,10 +15,19 @@ proto MAIN(|) is export { unless so @*ARGS { put $*USAGE; exit }; {*} }
 #| Collection of tools to visualize Path Finding Algorithms
 multi sub MAIN(
     File $input, #= fornax format file (solved)
-    Directory :$output = '/tmp/output', #= output directory (existing)
-    Rat() :$frame-rate = 1, #= frame rate
+    IO() :$out = '/tmp', #= output directory (default: /tmp)
+    Rat() :$frame-rate = 1, #= frame rate (default: 1)
+    Bool :$skip-video, #= skip video solution
     Bool :$verbose = True, #= verbosity
 ) is export {
+    my IO() $output = "%s/fornax-%s".sprintf(
+        $out.absolute, ('a'...'z', 'A'...'Z', 0...9).roll(8).join
+    );
+    mkdir $output;
+    die "Output directory doesn't exist" unless $output.d;
+
+    put "[fornax] Output: '$output'" if $verbose;
+
     my Str @lines = $input.IO.lines;
     my Int() %meta{Str} = Metadata.parse(@lines.first).Hash
                              or die "Cannot parse metadata";
@@ -129,11 +137,14 @@ multi sub MAIN(
     }
 
     put "[fornax] Generated images." if $verbose;
-    put "[fornax] Creating a slideshow." if $verbose;
 
-    my Str $log-level = $verbose ?? "info" !! "error";
-    run «ffmpeg -loglevel "$log-level" -r "$frame-rate" -i "$output/\%08d.png"
-                -vcodec libx264 -crf 28 -pix_fmt yuv420p "$output/solution.mp4"»;
+    unless $skip-video {
+        put "[fornax] Creating a slideshow." if $verbose;
+
+        my Str $log-level = $verbose ?? "info" !! "error";
+        run «ffmpeg -loglevel "$log-level" -r "$frame-rate" -i "$output/\%08d.png"
+                    -vcodec libx264 -crf 28 -pix_fmt yuv420p "$output/solution.mp4"»;
+    }
     put "[fornax] Output: '$output'";
 }
 
