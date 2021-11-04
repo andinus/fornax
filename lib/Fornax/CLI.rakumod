@@ -81,7 +81,7 @@ multi sub MAIN(
         # Wait until all scheduled jobs are finished, then empty the
         # array and continue.
         if @p.elems == $batch {
-            while @p.grep(*.status).elems !== $batch {};
+            await @p;
             @p = [];
         }
 
@@ -155,6 +155,7 @@ multi sub MAIN(
 
         my Str $log-level = $verbose ?? "info" !! "error";
         run «ffmpeg -loglevel "$log-level" -r "$frame-rate" -i "$output/\%08d.png"
+                    -vf 'tpad=stop_mode=clone:stop_duration=4'
                     -vcodec libx264 -crf 28 -pix_fmt yuv420p "$output/solution.mp4"»;
     }
     put "[fornax] Output: '$output'";
