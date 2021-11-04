@@ -145,6 +145,8 @@ multi sub MAIN(
             }
         }
     }
+    # Wait for remaining jobs to finish.
+    await @p;
 
     put "[fornax] Generated images." if $verbose;
 
