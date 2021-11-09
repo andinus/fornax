@@ -12,17 +12,10 @@ Table of Contents
 
 1. Demo
 2. Installation
-.. 1. Release
-.. 2. From Source
-..... 1. Without `git'
-..... 2. With `git'
 3. Documentation
-.. 1. Options
 4. Project Structure
 5. Fornax Format
-.. 1. Grids
 6. News
-.. 1. v0.1.0 - 2021-11-03
 
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -44,6 +37,14 @@ This collection includes:
   Solution for /DFS-33/, generated on /2021-11-03/ (click to play).
 
   [https://andinus.unfla.me/resources/projects/fornax/2021-11-03-DFS-33.png]
+
+  • DFS-51-incomplete (upto 187,628 frames; 120 fps):
+    <https://diode.zone/w/4RSFatXPL3GrkUucnFdxVS>
+  • DFS-51-incomplete (upto 4,000 frames; 120 fps):
+    <https://diode.zone/w/hWWaw8uKHCP5weUP5WWArD>
+
+  • Fornax: Generating 4.8 million frames:
+    <https://andinus.unfla.me/writings/2021/fornax-generating-4.8-million-frames.html>
 
 
 [https://andinus.unfla.me/resources/projects/fornax/2021-11-03-DFS-33.png]

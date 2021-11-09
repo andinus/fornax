@@ -1,6 +1,7 @@
 #+title: Fornax
 #+subtitle: Collection of tools to visualize Path Finding Algorithms
 #+export_file_name: index
+#+options: toc:1
 #+setupfile: ~/.emacs.d/org-templates/projects.org
 
 | Website         | https://andinus.unfla.me/projects/fornax |
@@ -17,6 +18,14 @@ This collection includes:
 Solution for /DFS-33/, generated on /2021-11-03/ (click to play).
 
 [[https://andinus.unfla.me/resources/projects/fornax/2021-11-03-DFS-33.mp4][https://andinus.unfla.me/resources/projects/fornax/2021-11-03-DFS-33.png]]
+
+- DFS-51-incomplete (upto 187,628 frames; 120 fps):
+  https://diode.zone/w/4RSFatXPL3GrkUucnFdxVS
+- DFS-51-incomplete (upto 4,000 frames; 120 fps):
+  https://diode.zone/w/hWWaw8uKHCP5weUP5WWArD
+
+- Fornax: Generating 4.8 million frames:
+  https://andinus.unfla.me/writings/2021/fornax-generating-4.8-million-frames.html
 
 * Installation
 
