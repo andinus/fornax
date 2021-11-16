@@ -151,6 +151,17 @@ A grid is printed for every iteration. Grids are composed of cells.
 
 * News
 
+** v0.1.1 - 2021-11-16
+
++ Add option to skip generating slideshow.
++ Use random directory to store solutions.
++ Process iterations in parallel.
++ Wait 4s on solution frame.
++ Add incomplete BFS program.
++ Add demo videos.
++ Upgrade to latest Fornax Format.
++ Add more solutions.
+
 ** v0.1.0 - 2021-11-03
 
 + Initial implementation:
