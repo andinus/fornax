@@ -10,7 +10,7 @@ public class DFS {
         {-1, +0}, // Up.
     };
 
-    static void traverse(int x, int y, char[][] maze, boolean[][] visited) {
+    static void traverse(int x, int y, char[][] maze, boolean[][] visited, boolean[][] path) {
         // Move in random direction.
         List<Integer> l = Arrays.asList(new Integer[]{0, 1, 2, 3});
         Collections.shuffle(l);
@@ -35,41 +35,70 @@ public class DFS {
 
             // Print the maze on every iteration.
             for(int j = 0; j < maze.length; j++)
-                for(int k = 0; k < maze[j].length; k++)
-                    if (j == curx && k == cury)
-                        System.out.print("@");
-                    else
-                        System.out.print(visited[j][k] ? "-" : maze[j][k]);
+                for(int k = 0; k < maze[j].length; k++) {
+                    if (maze[j][k] == '^' || maze[j][k] == '$')
+                        System.out.print(maze[j][k]);
+                    else {
+                        if (j == curx && k == cury)
+                            System.out.print("@");
+                        else {
+                            if (path[j][k])
+                                System.out.print("~");
+                            else if (visited[j][k])
+                                System.out.print("-");
+                            else
+                                System.out.print(maze[j][k]);
+                        }
+                    }
+                }
             System.out.println();
 
             // Found a solution, exiting.
             if (maze[curx][cury] == '$')
                 System.exit(0);
 
-            if (maze[curx][cury] == '.') {
+            if (maze[curx][cury] == '.' || maze[curx][cury] == '^') {
                 visited[curx][cury] = true;
-                traverse(curx, cury, maze, visited);
-                visited[curx][cury] = false;
+                path[curx][cury] = true;
+                traverse(curx, cury, maze, visited, path);
+                path[curx][cury] = false;
             }
         }
     }
 
     public static void main(String[] args) {
         char[][] maze = {
-            {'.', '#', '.', '#', '.', '.', '#', '.'},
-            {'.', '.', '.', '.', '.', '.', '.', '.'},
-            {'.', '#', '.', '.', '#', '.', '.', '$'},
-            {'.', '.', '.', '#', '.', '#', '.', '.'},
-            {'.', '.', '.', '.', '.', '.', '.', '#'},
-            {'.', '#', '#', '.', '.', '.', '#', '.'},
-            {'.', '.', '.', '.', '.', '.', '.', '.'},
+            { '^', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', },
+            { '.', '.', '.', '.', '#', '.', '.', '.', '.', '.', '.', '.', '.', },
+            { '.', '.', '.', '.', '#', '.', '.', '.', '.', '.', '.', '.', '.', },
+            { '.', '.', '.', '.', '#', '#', '#', '.', '.', '.', '.', '.', '.', },
+            { '.', '.', '#', '#', '.', '#', '.', '.', '.', '.', '.', '.', '.', },
+            { '.', '.', '.', '.', '.', '#', '.', '.', '.', '.', '.', '.', '.', },
+            { '.', '.', '.', '.', '.', '#', '.', '#', '#', '.', '#', '#', '#', },
+            { '.', '.', '.', '.', '.', '#', '.', '#', '.', '.', '.', '.', '.', },
+            { '.', '.', '.', '.', '.', '#', '.', '#', '.', '.', '.', '$', '.', },
+            { '.', '.', '.', '.', '.', '#', '.', '#', '.', '.', '.', '.', '.', },
+            { '.', '.', '.', '.', '.', '.', '.', '#', '.', '.', '.', '.', '.', },
+            { '.', '.', '.', '.', '.', '#', '.', '.', '.', '.', '.', '.', '.', },
+
+            // {'.', '#', '.', '#', '.', '.', '#', '.'},
+            // {'.', '.', '.', '.', '.', '.', '.', '.'},
+            // {'.', '#', '.', '.', '#', '.', '.', '$'},
+            // {'.', '.', '.', '#', '.', '#', '.', '.'},
+            // {'.', '.', '.', '.', '.', '.', '.', '#'},
+            // {'.', '#', '#', '.', '.', '.', '#', '.'},
+            // {'.', '.', '.', '.', '.', '.', '.', '.'},
         };
 
         boolean[][] visited = new boolean[maze.length][maze[0].length];
+        boolean[][] path = new boolean[maze.length][maze[0].length];
 
         for (int i = 0; i < maze.length; i++)
-            for (int j = 0; j < maze[i].length; j++)
+            for (int j = 0; j < maze[i].length; j++) {
                 visited[i][j] = false;
+                path[i][j] = false;
+            }
+
 
         System.out.println(String.format("rows:%d cols:%d", maze.length, maze[0].length));
 
@@ -81,6 +110,7 @@ public class DFS {
 
         // Start at 0,0.
         visited[0][0] = true;
-        traverse(0, 0, maze, visited);
+        path[0][0] = true;
+        traverse(0, 0, maze, visited, path);
     }
 }
