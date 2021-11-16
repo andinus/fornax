@@ -13,6 +13,10 @@ This collection includes:
 - Algorithms: Various algorithms solved in several programming
   languages.
 
+Writings:
+- Fornax: Generating 4.8 million frames:
+  https://andinus.unfla.me/writings/2021/fornax-generating-4.8-million-frames.html
+
 * Demo
 
 Solution for /DFS-33/, generated on /2021-11-03/ (click to play).
@@ -23,9 +27,6 @@ Solution for /DFS-33/, generated on /2021-11-03/ (click to play).
   https://diode.zone/w/4RSFatXPL3GrkUucnFdxVS
 - DFS-51-incomplete (upto 4,000 frames; 120 fps):
   https://diode.zone/w/hWWaw8uKHCP5weUP5WWArD
-
-- Fornax: Generating 4.8 million frames:
-  https://andinus.unfla.me/writings/2021/fornax-generating-4.8-million-frames.html
 
 * Installation
 
@@ -138,9 +139,11 @@ A grid is printed for every iteration. Grids are composed of cells.
 |------------------+--------|
 | Path             | ~.~      |
 | Blocked          | ~#~      |
+| Start            | ~^~      |
 | Destination      | ~$~      |
 |------------------+--------|
 | Visited          | ~-~      |
+| Current Path     | ~~~      |
 | Current Position | ~@~      |
 
 - /Current Position/ is prioritized over /Blocked/ & /Destination/ symbol if

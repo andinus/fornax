@@ -30,6 +30,10 @@ This collection includes:
 • Algorithms: Various algorithms solved in several programming
   languages.
 
+Writings:
+• Fornax: Generating 4.8 million frames:
+  <https://andinus.unfla.me/writings/2021/fornax-generating-4.8-million-frames.html>
+
 
 1 Demo
 ══════
@@ -42,9 +46,6 @@ This collection includes:
     <https://diode.zone/w/4RSFatXPL3GrkUucnFdxVS>
   • DFS-51-incomplete (upto 4,000 frames; 120 fps):
     <https://diode.zone/w/hWWaw8uKHCP5weUP5WWArD>
-
-  • Fornax: Generating 4.8 million frames:
-    <https://andinus.unfla.me/writings/2021/fornax-generating-4.8-million-frames.html>
 
 
 [https://andinus.unfla.me/resources/projects/fornax/2021-11-03-DFS-33.png]
@@ -187,9 +188,11 @@ This collection includes:
   ──────────────────────────
    Path              `.'
    Blocked           `#'
+   Start             `^'
    Destination       `$'
   ──────────────────────────
    Visited           `-'
+   Current Path      `~'
    Current Position  `@'
   ━━━━━━━━━━━━━━━━━━━━━━━━━━
 
