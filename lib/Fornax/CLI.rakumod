@@ -37,23 +37,28 @@ multi sub MAIN(
     constant $PATH = '.';
     constant $BLOK = '#';
     constant $DEST = '$';
+    constant $STRT = '^';
     constant $VIS = '-';
     constant $CUR = '@';
+    constant $CURPATH = '~';
 
     constant %CANVAS = :1920width, :1080height;
 
     # Colors.
     constant %C = (
-        red => "#f2b0a2",
-        blue => "#b5d0ff",
-        cyan => "#c0efff",
-        black => "#000000",
-        white => "#ffffff",
-        green => "#aecf90",
+        bg-main => "#ffffff",
 
-        pointer => "#093060",
-        pointer-red => "#5d3026",
-        pointer-green => "#184034",
+        red-subtle-bg => "#f2b0a2",
+        blue-subtle-bg => "#b5d0ff",
+        cyan-subtle-bg => "#c0efff",
+        green-subtle-bg => "#aecf90",
+
+        fg-main => "#000000",
+
+        fg-special-cold => "#093060",
+        fg-special-warm => "#5d3026",
+        fg-special-mild => "#184034",
+        fg-special-calm => "#61284f",
     ).map: {.key => hex2rgb(.value)};
 
     # Every cell must be square. Get the maximum width, height and use
@@ -106,7 +111,7 @@ multi sub MAIN(
             ) {
                 given Cairo::Context.new($_) {
                     # Paint the entire canvas white.
-                    .rgb: |%C<white>;
+                    .rgb: |%C<bg-main>;
                     .rectangle(0, 0, %CANVAS<width>, %CANVAS<height>);
                     .fill;
 
@@ -119,23 +124,30 @@ multi sub MAIN(
                             .rectangle: |@target;
 
                             given @grid[$r][$c] -> $cell {
+                                # According to the format, current
+                                # position may be prioritized over
+                                # Destination symbol so we colorize it
+                                # according to $status.
                                 when $cell eq $CUR {
-                                    .rgba: |%C<pointer>, 0.56;
-                                    .rgba: |%C<pointer-green>, 0.72 if $status == Completed;
-                                    .rgba: |%C<pointer-red>, 0.72 if $status == Blocked;
+                                    .rgba: |%C<fg-special-cold>, 0.56;
+                                    .rgba: |%C<fg-special-mild>, 0.72 if $status == Completed;
+                                    .rgba: |%C<fg-special-warm>, 0.72 if $status == Blocked;
+                                }
+                                when $cell eq $CURPATH {
+                                    .rgba: |%C<blue-subtle-bg>, 0.84;
+                                    .rgba: |%C<green-subtle-bg>, 0.96 if $status == Completed;
+                                    .rgba: |%C<red-subtle-bg>, 0.96 if $status == Blocked;
                                 }
                                 when $cell eq $VIS {
-                                    .rgba: |%C<blue>, 0.72;
-                                    .rgba: |%C<green>, 0.96 if $status == Completed;
-                                    .rgba: |%C<red>, 0.96 if $status == Blocked;
+                                    .rgba: |%C<cyan-subtle-bg>, 0.72;
                                 }
-                                when $cell eq $BLOK { .rgba: |%C<black>, 0.56 }
-                                when $cell eq $DEST { .rgb: |%C<green> }
-                                default { .rgba: |%C<black>, 0.08 }
+                                when $cell eq $BLOK { .rgba: |%C<fg-main>, 0.56 }
+                                when $cell eq $STRT|$DEST { .rgba: |%C<fg-special-mild>, 0.72 }
+                                default { .rgba: |%C<fg-main>, 0.08 }
                             }
                             .fill :preserve;
 
-                            .rgb: |%C<black>;
+                            .rgb: |%C<fg-main>;
                             .stroke;
                         }
                     }
