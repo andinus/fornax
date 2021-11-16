@@ -1,3 +1,8 @@
+2021-11-16: Prior to commit `7858dba48b41417f951031d36e7fbf66da8d14e2'
+            DFS visualization is not perfect. Solutions generated
+            after the mentioned commit should be correct. Everything
+            before DFS-51 was generated prior to this commit.
+
 DFS-51: 4875913 lines, 732M, 14M (compressed `xz -9')
 
         This file is not added to the repo.
