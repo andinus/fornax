@@ -17,7 +17,7 @@ multi sub MAIN(
     File $input, #= fornax format file (solved)
 
     Int() :$batch = 4, #= number of iterations to process at once (default: 4)
-    Int() :$fps = 1, #= frame rate for video solution (default: 1)
+    Int() :fps($frame-rate) = 1, #= frame rate for video solution (default: 1)
     Bool :$skip-video, #= skip video solution
     Bool :$verbose = True, #= verbosity (default: True)
 ) is export {
@@ -166,7 +166,7 @@ multi sub MAIN(
         put "[fornax] Creating a slideshow." if $verbose;
 
         my Str $log-level = $verbose ?? "info" !! "error";
-        run «ffmpeg -loglevel "$log-level" -r "$fps" -i "$output/\%08d.png"
+        run «ffmpeg -loglevel "$log-level" -r "$frame-rate" -i "$output/\%08d.png"
                     -vf 'tpad=stop_mode=clone:stop_duration=4'
                     -vcodec libx264 -crf 28 -pix_fmt yuv420p "$output/solution.mp4"»;
     }
