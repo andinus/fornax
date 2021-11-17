@@ -1,7 +1,8 @@
 #+title: Fornax
 #+subtitle: Collection of tools to visualize Path Finding Algorithms
 #+export_file_name: index
-#+options: toc:1
+#+options: toc:2
+#+startup: overview
 #+setupfile: ~/.emacs.d/org-templates/projects.org
 
 | Website         | https://andinus.unfla.me/projects/fornax |
@@ -75,23 +76,6 @@ cd fornax
 zef install .
 #+end_src
 
-* Documentation
-
-Fornax parses /Fornax format/, generates a ~PNG~ for each iteration which is
-later converted to a slideshow with ~ffmpeg~.
-
-- Solved paths are highlighted if the iteration is preceded by ~|~.
-- Illegal paths are highlighted if the iteration is preceded by ~!~.
-
-- *Note*: If the number of iterations are greater than an 8 digit number
-  then the slideshow might be incorrect.
-
-** Options
-
-- ~input~: This takes solved input file in the /Fornax/ format.
-- ~frame-rate~: Frame rate for the video.
-- ~output~: Output directory (for solution video/images).
-
 * Project Structure
 
 - Algorithms are located in ~algorithms/~ directory, sub-directory needs
@@ -107,11 +91,60 @@ later converted to a slideshow with ~ffmpeg~.
     This has been fixed in commit
     ~8cef86f0eb8b46b0ed2d7c37fa216890300249f6~.
 
+* Documentation
+
+Fornax parses /Fornax format/, generates a ~PNG~ for each iteration which is
+later converted to a slideshow with ~ffmpeg~.
+
+- Solved paths are highlighted if the iteration is preceded by ~|~.
+- Illegal paths are highlighted if the iteration is preceded by ~!~.
+
+- *Note*: If the number of iterations are greater than an 8 digit number
+  then the slideshow might be incorrect.
+- *Note*: ~/tmp~ must exist.
+
+** Options
+
+- ~input~: This takes solved input file in the /Fornax/ format.
+- ~fps~: Frame rate for the video solution.
+- ~skip-video~: Skip generating the video solution.
+- ~batch~: Number of iterations to process at once.
+
 * Fornax Format
 
-Fornax format is an intermediate output file generated after solving the
-maze. Algorithms must output the solution in this format.
+Fornax format defines 2 formats:
+- Maze (input)
+- Solution (output)
 
+** Grids
+
+A grid is printed for every iteration. Grids are composed of cells.
+
+| Cell             | Symbol |
+|------------------+--------|
+| Path             | ~.~      |
+| Blocked          | ~#~      |
+| Start            | ~^~      |
+| Destination      | ~$~      |
+|------------------+--------|
+| Visited          | ~-~      |
+| Current Path     | ~~~      |
+| Current Position | ~@~      |
+
+** Maze (input)
+
+Maze input must be in this format:
+#+begin_src
+...rows
+#+end_src
+
+It is upto the program to infer the number of rows & columns from the
+input file or it ask the user.
+
+** Solution (output)
+
+Fornax solution format is an intermediate output file generated after
+solving the maze. Algorithms must output the solution in this format:
 #+begin_src
 rows:<number of rows> cols:<number of columns>
 
@@ -134,24 +167,6 @@ columns is known, the whole grid should be printed in a single line.
   character.
 
 - First iteration is assumed to be the maze.
-
-** Grids
-
-A grid is printed for every iteration. Grids are composed of cells.
-
-| Cell             | Symbol |
-|------------------+--------|
-| Path             | ~.~      |
-| Blocked          | ~#~      |
-| Start            | ~^~      |
-| Destination      | ~$~      |
-|------------------+--------|
-| Visited          | ~-~      |
-| Current Path     | ~~~      |
-| Current Position | ~@~      |
-
-- /Current Position/ is prioritized over /Blocked/ & /Destination/ symbol if
-  it makes sense.
 
 * News
 

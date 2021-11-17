@@ -12,10 +12,18 @@ Table of Contents
 
 1. Demo
 2. Installation
-3. Documentation
-4. Project Structure
+.. 1. Release
+.. 2. From Source
+3. Project Structure
+4. Documentation
+.. 1. Options
 5. Fornax Format
+.. 1. Grids
+.. 2. Maze (input)
+.. 3. Solution (output)
 6. News
+.. 1. v0.1.1 - 2021-11-16
+.. 2. v0.1.0 - 2021-11-03
 
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -113,28 +121,7 @@ Writings:
 <https://andinus.nand.sh/static/D9AE4AEEE1F1B3598E81D9DFB67D55D482A799FD.asc>
 
 
-3 Documentation
-═══════════════
-
-  Fornax parses /Fornax format/, generates a `PNG' for each iteration
-  which is later converted to a slideshow with `ffmpeg'.
-
-  • Solved paths are highlighted if the iteration is preceded by `|'.
-  • Illegal paths are highlighted if the iteration is preceded by `!'.
-
-  • *Note*: If the number of iterations are greater than an 8 digit
-    number then the slideshow might be incorrect.
-
-
-3.1 Options
-───────────
-
-  • `input': This takes solved input file in the /Fornax/ format.
-  • `frame-rate': Frame rate for the video.
-  • `output': Output directory (for solution video/images).
-
-
-4 Project Structure
+3 Project Structure
 ═══════════════════
 
   • Algorithms are located in `algorithms/' directory, sub-directory
@@ -151,12 +138,73 @@ Writings:
       `8cef86f0eb8b46b0ed2d7c37fa216890300249f6'.
 
 
+4 Documentation
+═══════════════
+
+  Fornax parses /Fornax format/, generates a `PNG' for each iteration
+  which is later converted to a slideshow with `ffmpeg'.
+
+  • Solved paths are highlighted if the iteration is preceded by `|'.
+  • Illegal paths are highlighted if the iteration is preceded by `!'.
+
+  • *Note*: If the number of iterations are greater than an 8 digit
+    number then the slideshow might be incorrect.
+  • *Note*: `/tmp' must exist.
+
+
+4.1 Options
+───────────
+
+  • `input': This takes solved input file in the /Fornax/ format.
+  • `fps': Frame rate for the video solution.
+  • `skip-video': Skip generating the video solution.
+  • `batch': Number of iterations to process at once.
+
+
 5 Fornax Format
 ═══════════════
 
-  Fornax format is an intermediate output file generated after solving
-  the maze. Algorithms must output the solution in this format.
+  Fornax format defines 2 formats:
+  • Maze (input)
+  • Solution (output)
 
+
+5.1 Grids
+─────────
+
+  A grid is printed for every iteration. Grids are composed of cells.
+
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Cell              Symbol
+  ──────────────────────────
+   Path              `.'
+   Blocked           `#'
+   Start             `^'
+   Destination       `$'
+  ──────────────────────────
+   Visited           `-'
+   Current Path      `~'
+   Current Position  `@'
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+5.2 Maze (input)
+────────────────
+
+  Maze input must be in this format:
+  ┌────
+  │ ...rows
+  └────
+
+  It is upto the program to infer the number of rows & columns from the
+  input file or it ask the user.
+
+
+5.3 Solution (output)
+─────────────────────
+
+  Fornax solution format is an intermediate output file generated after
+  solving the maze. Algorithms must output the solution in this format:
   ┌────
   │ rows:<number of rows> cols:<number of columns>
   │
@@ -180,28 +228,6 @@ Writings:
     `!' character.
 
   • First iteration is assumed to be the maze.
-
-
-5.1 Grids
-─────────
-
-  A grid is printed for every iteration. Grids are composed of cells.
-
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━
-   Cell              Symbol
-  ──────────────────────────
-   Path              `.'
-   Blocked           `#'
-   Start             `^'
-   Destination       `$'
-  ──────────────────────────
-   Visited           `-'
-   Current Path      `~'
-   Current Position  `@'
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  • /Current Position/ is prioritized over /Blocked/ & /Destination/
-    symbol if it makes sense.
 
 
 6 News
