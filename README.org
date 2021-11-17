@@ -33,6 +33,16 @@ Fornax v0.1.0:
 - DFS-51-incomplete (upto 4,000 frames; 120 fps):
   https://diode.zone/w/hWWaw8uKHCP5weUP5WWArD
 
+* Usage
+
+#+begin_src sh
+# Solve the maze.
+raku algorithms/raku/DFS.raku resources/input/06 > /tmp/solution.fornax
+
+# Visualize the solution.
+raku -Ilib bin/fornax /tmp/solution.fornax
+#+end_src
+
 * Installation
 
 ~fornax~ is written in Raku, it can be installed with ~zef~. You can also
