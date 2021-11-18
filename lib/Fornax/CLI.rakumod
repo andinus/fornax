@@ -91,7 +91,7 @@ multi sub MAIN(
 
         my Str $log-level = $debug ?? "info" !! "error";
         run «ffmpeg -loglevel "$log-level" -r "$frame-rate" -i "$output/\%08d.png"
-                    -vf 'tpad=stop_mode=clone:stop_duration=4'
+                    -vf 'tpad=stop_mode=clone:stop_duration=2'
                     -vcodec libx264 -crf 28 -pix_fmt yuv420p "$output/solution.mp4"»;
     }
 }
