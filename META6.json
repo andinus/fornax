@@ -1,14 +1,15 @@
 {
     "name" : "fornax",
     "auth" : "zef:andinus",
-    "version" : "0.1.0",
+    "version" : "0.2.0",
     "description" : "Collection of tools to visualize Path Finding Algorithms",
     "authors" : [ "Andinus <andinus@nand.sh>" ],
     "license" : "ISC",
     "perl" : "6.d",
     "provides" : {
         "Fornax::CLI" : "lib/Fornax/CLI.rakumod",
-        "Fornax::Hex2RGB" : "lib/Fornax/Hex2RGB.rakumod"
+        "Fornax::Hex2RGB" : "lib/Fornax/Hex2RGB.rakumod",
+        "Fornax::GenerateFrame" : "lib/Fornax/GenerateFrame.rakumod"
     },
     "depends" : [
         "Cairo:ver<0.2.7+>"
