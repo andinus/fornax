@@ -15,14 +15,12 @@ Table of Contents
 3. Installation
 .. 1. Release
 .. 2. From Source
-4. Project Structure
-5. Documentation
+4. Documentation
 .. 1. Options
-6. Fornax Format
-.. 1. Grids
-.. 2. Maze (input)
-.. 3. Solution (output)
-7. News
+.. 2. Fornax Format
+.. 3. Project Structure
+5. Bugs
+6. News
 .. 1. v0.1.1 - 2021-11-16
 .. 2. v0.1.0 - 2021-11-03
 
@@ -134,24 +132,7 @@ Writings:
 <https://andinus.nand.sh/static/D9AE4AEEE1F1B3598E81D9DFB67D55D482A799FD.asc>
 
 
-4 Project Structure
-═══════════════════
-
-  • Algorithms are located in `algorithms/' directory, sub-directory
-    needs to be created for programming languages which will hold the
-    actual source.
-
-  • Sample solutions can be found in `resources/solutions/' directory.
-
-    • *Note*: Some solutions might output illegal moves (like walking
-      over blocked path), this error is only in visualization, the
-      solution is correct.
-
-      This has been fixed in commit
-      `8cef86f0eb8b46b0ed2d7c37fa216890300249f6'.
-
-
-5 Documentation
+4 Documentation
 ═══════════════
 
   Fornax parses /Fornax format/, generates a `PNG' for each iteration
@@ -160,12 +141,8 @@ Writings:
   • Solved paths are highlighted if the iteration is preceded by `|'.
   • Illegal paths are highlighted if the iteration is preceded by `!'.
 
-  • *Note*: If the number of iterations are greater than an 8 digit
-    number then the slideshow might be incorrect.
-  • *Note*: `/tmp' must exist.
 
-
-5.1 Options
+4.1 Options
 ───────────
 
   • `input': This takes solved input file in the /Fornax/ format.
@@ -174,16 +151,16 @@ Writings:
   • `batch': Number of iterations to process at once.
 
 
-6 Fornax Format
-═══════════════
+4.2 Fornax Format
+─────────────────
 
   Fornax format defines 2 formats:
   • Maze (input)
   • Solution (output)
 
 
-6.1 Grids
-─────────
+4.2.1 Grids
+╌╌╌╌╌╌╌╌╌╌╌
 
   A grid is printed for every iteration. Grids are composed of cells.
 
@@ -201,8 +178,8 @@ Writings:
   ━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 
-6.2 Maze (input)
-────────────────
+4.2.2 Maze (input)
+╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌
 
   Maze input must be in this format:
   ┌────
@@ -213,8 +190,8 @@ Writings:
   input file or it ask the user.
 
 
-6.3 Solution (output)
-─────────────────────
+4.2.3 Solution (output)
+╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌
 
   Fornax solution format is an intermediate output file generated after
   solving the maze. Algorithms must output the solution in this format:
@@ -243,10 +220,40 @@ Writings:
   • First iteration is assumed to be the maze.
 
 
-7 News
+4.3 Project Structure
+─────────────────────
+
+  • Algorithms are located in `algorithms/' directory, sub-directory
+    needs to be created for programming languages which will hold the
+    actual source.
+
+  • Sample solutions can be found in `resources/solutions/' directory.
+
+    • *Note*: Some solutions might output illegal moves (like walking
+      over blocked path), this error is only in visualization, the
+      solution is correct.
+
+      This has been fixed in commit
+      `8cef86f0eb8b46b0ed2d7c37fa216890300249f6'.
+
+
+5 Bugs
 ══════
 
-7.1 v0.1.1 - 2021-11-16
+  • If the number of iterations are greater than an 8 digit number then
+    the slideshow might be incorrect.
+
+  • `/tmp' is assumed to exist.
+
+  • Might panic with: `MoarVM oops: MVM_str_hash_entry_size called with
+      a stale hashtable pointer'. This has been fixed:
+      <https://github.com/rakudo/rakudo/pull/4634>.
+
+
+6 News
+══════
+
+6.1 v0.1.1 - 2021-11-16
 ───────────────────────
 
   ⁃ Add option to skip generating slideshow.
@@ -259,7 +266,7 @@ Writings:
   ⁃ Add more solutions.
 
 
-7.2 v0.1.0 - 2021-11-03
+6.2 v0.1.0 - 2021-11-03
 ───────────────────────
 
   ⁃ Initial implementation:
