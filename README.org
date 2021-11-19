@@ -1,7 +1,8 @@
 #+title: Fornax
 #+subtitle: Collection of tools to visualize Path Finding Algorithms
 #+export_file_name: index
-#+options: toc:1
+#+options: toc:2
+#+startup: overview
 #+setupfile: ~/.emacs.d/org-templates/projects.org
 
 | Website         | https://andinus.unfla.me/projects/fornax |
@@ -31,6 +32,16 @@ Fornax v0.1.0:
   https://diode.zone/w/4RSFatXPL3GrkUucnFdxVS
 - DFS-51-incomplete (upto 4,000 frames; 120 fps):
   https://diode.zone/w/hWWaw8uKHCP5weUP5WWArD
+
+* Usage
+
+#+begin_src sh
+# Solve the maze.
+raku algorithms/raku/DFS.raku resources/input/06 > /tmp/solution.fornax
+
+# Visualize the solution.
+raku -Ilib bin/fornax /tmp/solution.fornax
+#+end_src
 
 * Installation
 
@@ -83,35 +94,48 @@ later converted to a slideshow with ~ffmpeg~.
 - Solved paths are highlighted if the iteration is preceded by ~|~.
 - Illegal paths are highlighted if the iteration is preceded by ~!~.
 
-- *Note*: If the number of iterations are greater than an 8 digit number
-  then the slideshow might be incorrect.
-
 ** Options
 
 - ~input~: This takes solved input file in the /Fornax/ format.
-- ~frame-rate~: Frame rate for the video.
-- ~output~: Output directory (for solution video/images).
+- ~fps~: Frame rate for the video solution.
+- ~skip-video~: Skip generating the video solution.
+- ~batch~: Number of iterations to process at once.
 
-* Project Structure
+** Fornax Format
 
-- Algorithms are located in ~algorithms/~ directory, sub-directory needs
-  to be created for programming languages which will hold the actual
-  source.
+Fornax format defines 2 formats:
+- Maze (input)
+- Solution (output)
 
-- Sample solutions can be found in ~resources/solutions/~ directory.
+*** Grids
 
-  - *Note*: Some solutions might output illegal moves (like walking over
-    blocked path), this error is only in visualization, the solution is
-    correct.
+A grid is printed for every iteration. Grids are composed of cells.
 
-    This has been fixed in commit
-    ~8cef86f0eb8b46b0ed2d7c37fa216890300249f6~.
+| Cell             | Symbol |
+|------------------+--------|
+| Path             | ~.~      |
+| Blocked          | ~#~      |
+| Start            | ~^~      |
+| Destination      | ~$~      |
+|------------------+--------|
+| Visited          | ~-~      |
+| Current Path     | ~~~      |
+| Current Position | ~@~      |
 
-* Fornax Format
+*** Maze (input)
 
-Fornax format is an intermediate output file generated after solving the
-maze. Algorithms must output the solution in this format.
+Maze input must be in this format:
+#+begin_src
+...rows
+#+end_src
 
+It is upto the program to infer the number of rows & columns from the
+input file or it ask the user.
+
+*** Solution (output)
+
+Fornax solution format is an intermediate output file generated after
+solving the maze. Algorithms must output the solution in this format:
 #+begin_src
 rows:<number of rows> cols:<number of columns>
 
@@ -135,23 +159,31 @@ columns is known, the whole grid should be printed in a single line.
 
 - First iteration is assumed to be the maze.
 
-** Grids
+** Project Structure
 
-A grid is printed for every iteration. Grids are composed of cells.
+- Algorithms are located in ~algorithms/~ directory, sub-directory needs
+  to be created for programming languages which will hold the actual
+  source.
 
-| Cell             | Symbol |
-|------------------+--------|
-| Path             | ~.~      |
-| Blocked          | ~#~      |
-| Start            | ~^~      |
-| Destination      | ~$~      |
-|------------------+--------|
-| Visited          | ~-~      |
-| Current Path     | ~~~      |
-| Current Position | ~@~      |
+- Sample solutions can be found in ~resources/solutions/~ directory.
 
-- /Current Position/ is prioritized over /Blocked/ & /Destination/ symbol if
-  it makes sense.
+  - *Note*: Some solutions might output illegal moves (like walking over
+    blocked path), this error is only in visualization, the solution is
+    correct.
+
+    This has been fixed in commit
+    ~8cef86f0eb8b46b0ed2d7c37fa216890300249f6~.
+
+* Bugs
+
+- If the number of iterations are greater than an 8 digit number then
+  the slideshow might be incorrect.
+
+- ~/tmp~ is assumed to exist.
+
+- Might panic with: ~MoarVM oops: MVM_str_hash_entry_size called with a
+  stale hashtable pointer~. This has been fixed:
+  https://github.com/rakudo/rakudo/pull/4634.
 
 * News
 
