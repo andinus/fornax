@@ -62,9 +62,6 @@ class BFS {
             System.out.println();
             if (maze[curx][cury] == '$') {
                 path[curx][cury]=new Coordinates(start.x,start.y);
-
-                System.out.println("Path found");
-                
                 boolean[][] printpath=new boolean[maze.length][maze.length];
                 for (int q = 0; q < maze.length; q++) {
                     for (int j = 0; j < maze.length; j++) {
@@ -80,16 +77,28 @@ class BFS {
 
                                    //path stores parent of current coordinate
                 }  
-                for(int d=0;d<maze.length;d++){
-                    for(int e=0;e<maze.length;e++){
-                        System.out.print(printpath[d][e]);                  //print path
+                for(int j = 0; j < maze.length; j++)
+                for(int k = 0; k < maze[j].length; k++) {
+                    if (maze[j][k] == '^' || maze[j][k] == '$')
+                        System.out.print(maze[j][k]);
+                    else {
+                        if (j == curx && k == cury)
+                            System.out.print("@");
+                        else {
+                            if(printpath[j][k])
+                            System.out.print("~");
+                        else if (visited[j][k])
+                                System.out.print("-");
+                            else
+                                System.out.print(maze[j][k]);
+                        }
                     }
-                    System.out.println();
                 }
+            System.out.println();
                 System.exit(0);
             } else if (visited[curx][cury] || maze[curx][cury] == '#') {
                 continue;
-            } else if(maze[curx][cury]=='_') {
+            } else if(maze[curx][cury]=='.') {
                 enqueue(new Coordinates(curx, cury));
                 visited[curx][cury] = true;
                 path[curx][cury]=new Coordinates(start.x,start.y);
@@ -108,9 +117,9 @@ class BFS {
 
     public static void main(String[] args) {
         char[][] maze = {
-            {'*', '#', '_'},
-            {'_', '_', '#'},
-            {'_', '_', '$'},
+            {'^', '#', '.'},
+            {'.', '.', '#'},
+            {'.', '.', '$'},
         };
 
         Coordinates start = new Coordinates(0,0);
