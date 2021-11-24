@@ -14,7 +14,12 @@ sub MAIN(File $input) {
     die "Inconsistent maze" unless [==] @maze.map(*.elems);
 
     put "rows:{@maze.elems} cols:{@maze[0].elems}";
-    dfs(@maze, 0, 0);
+    for 0..@maze.end -> $y {
+        for 0..@maze[0].cache.end -> $x {
+            dfs(@maze, $y, $x) if @maze[$y][$x] eq "^";
+        }
+    }
+    die "Cannot solve maze";
 }
 
 sub dfs(

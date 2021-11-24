@@ -30,8 +30,8 @@ constant %C = (
 enum IterStatus <Walking Blocked Completed>;
 
 sub generate-frame(
-    :%CANVAS, :$out, :%excess, :$side, :%meta, :$iter is copy
-    , :$idx, :$debug,
+    :%CANVAS, :$out, :%excess, :$side, :%meta, :$iter is copy,
+    :$idx, :$debug,
 ) is export {
     my IterStatus $status;
     given $iter.substr(0, 1) {
@@ -82,9 +82,9 @@ sub generate-frame(
                         .rgba: |%C<red-subtle-bg>, 0.96 if $status == Blocked;
                     }
                     when $cell eq $VIS {
-                        .rgba: |%C<cyan-subtle-bg>, 0.72;
+                        .rgba: |%C<cyan-subtle-bg>, 0.84;
                     }
-                    when $cell eq $BLOK { .rgba: |%C<fg-main>, 0.56 }
+                    when $cell eq $BLOK { .rgba: |%C<fg-main>, 0.48 }
                     when $cell eq $STRT|$DEST { .rgba: |%C<fg-special-mild>, 0.72 }
                     default { .rgba: |%C<fg-main>, 0.08 }
                 }
