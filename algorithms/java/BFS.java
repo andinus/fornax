@@ -33,16 +33,18 @@ class BFS {
 
     static void bfs(char[][] maze, Coordinates start, boolean[][] visited,Coordinates [][] path) {
         for (int i = 0; i < 4; i++) {
-            int curx = start.x;
-            int cury = start.y;
+            int curx = start.x + dir[i][0];
+            int cury = start.y + dir[i][1];
 
-            curx += dir[i][0];
-            cury += dir[i][1];
-            
-            if (curx < 0 || cury < 0 || curx > maze.length - 1 || cury > maze.length - 1) {
-                // for square...  out of maze check.
+            // Out of bounds check.
+            if (curx < 0 || cury < 0
+                || curx > maze.length - 1 || cury > maze[0].length - 1)
                 continue;
-            } 
+
+            // Marker cell.
+            if (maze[curx][cury] == '#')
+                System.out.print("!");
+
             // Print the maze on every iteration.
             for(int j = 0; j < maze.length; j++)
                 for(int k = 0; k < maze[j].length; k++) {
@@ -52,7 +54,7 @@ class BFS {
                         if (j == curx && k == cury)
                             System.out.print("@");
                         else {
-                           if (visited[j][k])
+                            if (visited[j][k])
                                 System.out.print("-");
                             else
                                 System.out.print(maze[j][k]);
@@ -61,40 +63,46 @@ class BFS {
                 }
             System.out.println();
             if (maze[curx][cury] == '$') {
-                path[curx][cury]=new Coordinates(start.x,start.y);
-                boolean[][] printpath=new boolean[maze.length][maze.length];
+                path[curx][cury] = new Coordinates(start.x,start.y);
+
+                boolean[][] printpath = new boolean[maze.length][maze[0].length];
+
                 for (int q = 0; q < maze.length; q++) {
-                    for (int j = 0; j < maze.length; j++) {
-                       printpath[q][j]=false;
+                    for (int j = 0; j < maze[q].length; j++) {
+                        printpath[q][j] = false;
                     }
                 }
+
                 printpath[0][0]=true;                   //start as true
                 while(curx != 0 || cury != 0){
                     printpath[curx][cury] = true;
                     int temp = curx;
                     curx = path[curx][cury].x;
-                    cury = path[temp][cury].y;  
+                    cury = path[temp][cury].y;
 
-                                   //path stores parent of current coordinate
-                }  
+                    //path stores parent of current coordinate
+                }
+
+                // Marker cell.
+                System.out.print("|");
                 for(int j = 0; j < maze.length; j++)
-                for(int k = 0; k < maze[j].length; k++) {
-                    if (maze[j][k] == '^' || maze[j][k] == '$')
-                        System.out.print(maze[j][k]);
-                    else {
-                        if (j == curx && k == cury)
-                            System.out.print("@");
+                    for(int k = 0; k < maze[j].length; k++) {
+                        if (maze[j][k] == '^' || maze[j][k] == '$')
+                            System.out.print(maze[j][k]);
                         else {
-                            if(printpath[j][k])
-                            System.out.print("~");
-                        else if (visited[j][k])
-                                System.out.print("-");
-                            else
-                                System.out.print(maze[j][k]);
+                            if (j == curx && k == cury)
+                                System.out.print("@");
+                            else {
+                                if(printpath[j][k])
+                                    System.out.print("~");
+                                else if (visited[j][k])
+                                    System.out.print("-");
+                                else
+                                    System.out.print(maze[j][k]);
+                            }
                         }
                     }
-                }
-            System.out.println();
+                System.out.println();
                 System.exit(0);
             } else if (visited[curx][cury] || maze[curx][cury] == '#') {
                 continue;
@@ -108,30 +116,43 @@ class BFS {
         if (front == -1) {
             System.out.println("path not found");
             System.exit(0);
-        } else{
-           
-         //   System.out.println(start.x + " " + start.y);
+        } else {
             bfs(maze, queue[front], visited, path);
         }
     }
 
     public static void main(String[] args) {
         char[][] maze = {
-            {'^', '#', '.'},
-            {'.', '.', '#'},
-            {'.', '.', '$'},
+            { '^', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', },
+            { '.', '.', '.', '.', '#', '.', '.', '.', '.', '.', '.', '.', '.', },
+            { '.', '.', '.', '.', '#', '.', '.', '.', '.', '.', '.', '.', '.', },
+            { '.', '.', '.', '.', '#', '#', '#', '.', '.', '.', '.', '.', '.', },
+            { '.', '.', '#', '#', '.', '#', '.', '.', '.', '.', '.', '.', '.', },
+            { '.', '.', '.', '.', '.', '#', '.', '.', '.', '.', '.', '.', '.', },
+            { '.', '.', '.', '.', '.', '#', '.', '#', '#', '.', '#', '#', '#', },
+            { '.', '.', '.', '.', '.', '#', '.', '#', '.', '.', '.', '.', '.', },
+            { '.', '.', '.', '.', '.', '#', '.', '#', '.', '.', '.', '$', '.', },
+            { '.', '.', '.', '.', '.', '#', '.', '#', '.', '.', '.', '.', '.', },
+            { '.', '.', '.', '.', '.', '.', '.', '#', '.', '.', '.', '.', '.', },
+            { '.', '.', '.', '.', '.', '#', '.', '.', '.', '.', '.', '.', '.', },
+            // {'^', '#', '.'},
+            // {'.', '.', '#'},
+            // {'.', '.', '$'},
         };
 
         Coordinates start = new Coordinates(0,0);
-        boolean[][] visited = new boolean[maze.length][maze.length];
-        Coordinates[][] path = new Coordinates[maze.length][maze.length];
+        boolean[][] visited = new boolean[maze.length][maze[0].length];
+        Coordinates[][] path = new Coordinates[maze.length][maze[0].length];
 
-        for (int i = 0; i < maze.length; i++) {
-            for (int j = 0; j < maze.length; j++) {
+        System.out.println(String.format("rows:%d cols:%d", maze.length, maze[0].length));
+
+        for (int i = 0; i < maze.length; i++)
+            for (int j = 0; j < maze[i].length; j++) {
                 visited[i][j] = false;
                 path[i][j] = new Coordinates(0, 0);
+                System.out.print(maze[i][j]);
             }
-        }
+        System.out.println();
 
         visited[0][0] = true;
         enqueue(start);
