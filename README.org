@@ -190,6 +190,14 @@ columns is known, the whole grid should be printed in a single line.
 
 * News
 
+** v0.2.0 - 2021-11-25
+
++ Add demo videos.
++ Add more solutions.
++ Implement BFS in Java.
++ Implement DFS in Raku.
++ Add basic tests.
+
 ** v0.1.1 - 2021-11-16
 
 + Add option to skip generating slideshow.
